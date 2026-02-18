@@ -22,6 +22,8 @@ public class Booking {
     @JoinColumn(name = "slot_id", nullable = false)
     private InterviewSlot interviewSlot;
 
+    private String resumeLink;
+
     private String status = "CONFIRMED"; // PENDING, CONFIRMED, CANCELLED
 
     private LocalDateTime createdAt = LocalDateTime.now();

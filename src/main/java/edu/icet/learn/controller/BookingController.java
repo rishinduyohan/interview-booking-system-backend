@@ -14,10 +14,10 @@ public class BookingController {
 
     private final InterviewService interviewService;
 
-    @PostMapping("/book/{slotId}")
-    public Booking bookInterview(@PathVariable Long slotId, @RequestBody Candidate candidate) {
+    @PostMapping("/book/")
+    public Booking bookInterview(@RequestParam Long slotId, @RequestParam Candidate candidate, @RequestParam String resumeLink) {
         try {
-            return interviewService.bookInterview(candidate, slotId);
+            return interviewService.bookInterview(candidate, slotId, resumeLink);
         } catch (RuntimeException e) {
             throw new RuntimeException("Failed to book interview: " + e.getMessage());
         }
