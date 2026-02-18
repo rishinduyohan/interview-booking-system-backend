@@ -20,7 +20,7 @@ public class Interviewer {
     @Column(unique = true, nullable = false)
     private String email;
 
-    private String department;
+    private String designation;
 
     @OneToMany(mappedBy = "interviewer", cascade = CascadeType.ALL)
     private List<InterviewSlot> slots;
