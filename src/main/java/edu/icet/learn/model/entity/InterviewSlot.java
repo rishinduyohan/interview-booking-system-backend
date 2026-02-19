@@ -17,7 +17,7 @@ public class InterviewSlot {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "interviewer_id", nullable = false)
     private Interviewer interviewer;
 

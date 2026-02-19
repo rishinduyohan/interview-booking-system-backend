@@ -1,5 +1,6 @@
 package edu.icet.learn.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import java.util.List;
@@ -20,8 +21,9 @@ public class Interviewer {
     @Column(unique = true, nullable = false)
     private String email;
 
-    private String department;
+    private String designation;
 
     @OneToMany(mappedBy = "interviewer", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<InterviewSlot> slots;
 }

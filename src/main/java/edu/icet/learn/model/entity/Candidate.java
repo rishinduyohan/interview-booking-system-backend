@@ -16,9 +16,7 @@ public class Candidate {
     private Long id;
 
     @Column(nullable = false)
-    private String firstName;
-
-    private String lastName;
+    private String username;
 
     @Column(unique = true, nullable = false)
     private String email;
