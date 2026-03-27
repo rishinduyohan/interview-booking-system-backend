@@ -5,6 +5,8 @@ import edu.icet.learn.service.InterviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/slots")
 @RequiredArgsConstructor
@@ -14,12 +16,12 @@ public class SlotController {
     private final InterviewService interviewService;
 
     @GetMapping("/available")
-    public java.util.List<InterviewSlot> getAvailableSlots() {
+    public List<InterviewSlot> getAvailableSlots() {
         return interviewService.getAvailableSlots();
     }
 
     @PostMapping("/create")
-    public InterviewSlot createSlot(@RequestBody InterviewSlot slot) {
+    public List<InterviewSlot> createSlot(@RequestBody InterviewSlot slot) {
         try {
             return interviewService.createSlot(slot);
         } catch (RuntimeException e) {
