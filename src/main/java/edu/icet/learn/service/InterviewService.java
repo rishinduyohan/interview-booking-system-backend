@@ -22,6 +22,7 @@ public class InterviewService {
     private final InterviewSlotRepository slotRepository;
     private final BookingRepository bookingRepository;
     private final InterviewerRepository interviewerRepository;
+    private final edu.icet.learn.repository.CandidateRepository candidateRepository;
 
     @Transactional
     public java.util.List<InterviewSlot> createSlot(InterviewSlot slot) {
@@ -78,6 +79,15 @@ public class InterviewService {
 
         if (!slot.isAvailable()) {
             throw new RuntimeException("Time is already booked");
+        }
+
+        Candidate existingCandidate = candidateRepository.findByEmail(candidate.getEmail()).orElse(null);
+        if (existingCandidate != null) {
+            existingCandidate.setPhoneNumber(candidate.getPhoneNumber());
+            existingCandidate.setUsername(candidate.getUsername());
+            candidate = candidateRepository.save(existingCandidate);
+        } else {
+            candidate = candidateRepository.save(candidate);
         }
 
         Booking booking = new Booking();
