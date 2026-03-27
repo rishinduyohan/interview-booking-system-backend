@@ -23,6 +23,7 @@ public class InterviewService {
     private final BookingRepository bookingRepository;
     private final InterviewerRepository interviewerRepository;
 
+    @Transactional
     public InterviewSlot createSlot(InterviewSlot slot) {
 
         Long interviewerId = slot.getInterviewer().getId();
@@ -43,6 +44,14 @@ public class InterviewService {
         slot.setInterviewer(interviewer);
 
         return slotRepository.save(slot);
+    }
+
+    public List<Booking> getAllBookings() {
+        return bookingRepository.findAll();
+    }
+
+    public List<InterviewSlot> getAvailableSlots() {
+        return slotRepository.findByIsAvailableTrue();
     }
 
     @Transactional
