@@ -10,6 +10,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/interviewers")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:4200")
 public class InterviewerController {
 
     private final InterviewerService interviewerService;

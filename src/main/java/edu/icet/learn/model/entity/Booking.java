@@ -26,5 +26,7 @@ public class Booking {
 
     private String status = "CONFIRMED"; // PENDING, CONFIRMED, CANCELLED
 
+    private String type = "technical";
+
     private LocalDateTime createdAt = LocalDateTime.now();
 }

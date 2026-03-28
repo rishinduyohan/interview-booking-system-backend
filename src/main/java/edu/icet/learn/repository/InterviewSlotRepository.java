@@ -15,4 +15,6 @@ public interface InterviewSlotRepository extends JpaRepository<InterviewSlot, Lo
             "AND (:start < s.endTime AND :end > s.startTime)")
     List<InterviewSlot> findOverlappingSlots(Long interviewerId, LocalDateTime start, LocalDateTime end);
 
+    List<InterviewSlot> findByIsAvailableTrue();
+
 }

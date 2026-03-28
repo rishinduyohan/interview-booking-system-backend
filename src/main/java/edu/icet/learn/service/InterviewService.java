@@ -22,8 +22,10 @@ public class InterviewService {
     private final InterviewSlotRepository slotRepository;
     private final BookingRepository bookingRepository;
     private final InterviewerRepository interviewerRepository;
+    private final edu.icet.learn.repository.CandidateRepository candidateRepository;
 
-    public InterviewSlot createSlot(InterviewSlot slot) {
+    @Transactional
+    public java.util.List<InterviewSlot> createSlot(InterviewSlot slot) {
 
         Long interviewerId = slot.getInterviewer().getId();
 
@@ -40,9 +42,34 @@ public class InterviewService {
         if (!overlaps.isEmpty()) {
             log.info("Interviewer overlapped");
         }
-        slot.setInterviewer(interviewer);
 
-        return slotRepository.save(slot);
+        java.util.List<InterviewSlot> createdSlots = new java.util.ArrayList<>();
+        LocalDateTime currentStart = slot.getStartTime();
+        LocalDateTime finalEnd = slot.getEndTime();
+
+        while (currentStart.isBefore(finalEnd)) {
+            LocalDateTime nextEnd = currentStart.plusMinutes(30);
+            if (nextEnd.isAfter(finalEnd)) {
+                break; // Skip remaining uneven time
+            }
+            InterviewSlot newSlot = new InterviewSlot();
+            newSlot.setInterviewer(interviewer);
+            newSlot.setStartTime(currentStart);
+            newSlot.setEndTime(nextEnd);
+            newSlot.setAvailable(true);
+            createdSlots.add(slotRepository.save(newSlot));
+            currentStart = nextEnd;
+        }
+
+        return createdSlots;
+    }
+
+    public List<Booking> getAllBookings() {
+        return bookingRepository.findAll();
+    }
+
+    public List<InterviewSlot> getAvailableSlots() {
+        return slotRepository.findByIsAvailableTrue();
     }
 
     @Transactional
@@ -52,6 +79,15 @@ public class InterviewService {
 
         if (!slot.isAvailable()) {
             throw new RuntimeException("Time is already booked");
+        }
+
+        Candidate existingCandidate = candidateRepository.findByEmail(candidate.getEmail()).orElse(null);
+        if (existingCandidate != null) {
+            existingCandidate.setPhoneNumber(candidate.getPhoneNumber());
+            existingCandidate.setUsername(candidate.getUsername());
+            candidate = candidateRepository.save(existingCandidate);
+        } else {
+            candidate = candidateRepository.save(candidate);
         }
 
         Booking booking = new Booking();
